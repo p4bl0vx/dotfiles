@@ -1,0 +1,13 @@
+code --install-extension catppuccin.catppuccin-vsc
+code --install-extension catppuccin.catppuccin-vsc-icons
+code --install-extension devsense.composer-php-vscode
+code --install-extension devsense.intelli-php-vscode
+code --install-extension devsense.phptools-vscode
+code --install-extension devsense.profiler-php-vscode
+code --install-extension esbenp.prettier-vscode
+code --install-extension ms-python.debugpy
+code --install-extension ms-python.python
+code --install-extension ms-python.vscode-pylance
+code --install-extension ms-python.vscode-python-envs
+code --install-extension ms-vscode.cpptools
+code --install-extension ritwickdey.liveserver
