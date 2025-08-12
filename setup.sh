@@ -32,6 +32,8 @@ echo -e "${WHITE}                    By: Your Setup Script${NC}"
 echo ""
 echo -e "${YELLOW}[!]${NC} This script will install and configure your complete desktop environment"
 echo -e "${YELLOW}[!]${NC} Estimated time: 15-30 minutes depending on your internet connection"
+echo -e "${CYAN}[*]${NC} Detected user: ${WHITE}$(whoami)${NC}"
+echo -e "${CYAN}[*]${NC} Home directory: ${WHITE}$HOME${NC}"
 echo ""
 read -p "Press Enter to continue..."
 echo ""
@@ -196,19 +198,44 @@ success "Fira Code Nerd Font installed"
 
 step "Copying dotfiles configuration"
 info "Copying configuration files to home directory..."
+
+# Get current user information
+CURRENT_USER=$(whoami)
+CURRENT_HOME=$(eval echo ~$CURRENT_USER)
+
+info "Configuring files for user: $CURRENT_USER"
+info "Home directory: $CURRENT_HOME"
+
+# Create wallpaper directory
+mkdir -p "$CURRENT_HOME/.wallpapers" &>/dev/null
+
+info "Copying wallpaper.jpg to ~/.wallpapers..."
+cp "dotfiles/wallpaper.jpg" "$CURRENT_HOME/.wallpapers/" &>/dev/null
+success "Wallpaper copied to ~/.wallpapers"
+
 for item in dotfiles/*; do
     item_name=$(basename "$item")
-    if [ "$item_name" != "setup.sh" ] && [ "$item_name" != "README.md" ]; then
+    if [ "$item_name" != "setup.sh" ] && [ "$item_name" != "README.md" ] && [ "$item_name" != "wallpapers" ] && [ "$item_name" != "wallpaper.jpg" ]; then
         if [ -d "$item" ]; then
             info "Copying directory $item_name → ~/.$item_name"
             cp -r "$item" "$HOME/.$item_name" &>/dev/null
+            
+            # Replace user placeholders in all files within the directory
+            if [ -d "$HOME/.$item_name" ]; then
+                find "$HOME/.$item_name" -type f -exec sed -i "s|{{USER_HOME}}|$CURRENT_HOME|g" {} \; 2>/dev/null
+            fi
         elif [ -f "$item" ]; then
             info "Copying file $item_name → ~/.$item_name"
             cp "$item" "$HOME/.$item_name" &>/dev/null
+            
+            # Replace user placeholders in the file
+            if [ -f "$HOME/.$item_name" ]; then
+                sed -i "s|{{USER_HOME}}|$CURRENT_HOME|g" "$HOME/.$item_name" 2>/dev/null
+            fi
         fi
     fi
 done
-success "Dotfiles configuration copied"
+success "Dotfiles configuration copied and user paths updated"
 
 step "Installing Zsh plugins"
 info "Installing syntax highlighting plugin..."
@@ -333,10 +360,21 @@ echo -e "${CYAN}[✓]${NC} Applications installed: ${WHITE}All essential apps re
 echo -e "${CYAN}[✓]${NC} Development tools: ${WHITE}VS Code, Ghidra, Pwndbg configured${NC}"
 echo -e "${CYAN}[✓]${NC} Terminal setup: ${WHITE}Oh My Zsh with Powerlevel10k${NC}"
 echo -e "${CYAN}[✓]${NC} Dotfiles: ${WHITE}All configurations applied${NC}"
+
+# Check if wallpapers were copied
+if [ -f "$HOME/.wallpapers/wallpaper.jpg" ]; then
+    echo -e "${CYAN}[✓]${NC} Wallpaper: ${WHITE}Copied to ~/.wallpapers/${NC}"
+else
+    echo -e "${YELLOW}[!]${NC} Wallpaper: ${WHITE}Add wallpaper.jpg to dotfiles/ for automatic setup${NC}"
+fi
+
 echo ""
 echo -e "${YELLOW}[!]${NC} ${BOLD}Next steps:${NC}"
 echo -e "    • Log out and log back in to apply all theme changes"
 echo -e "    • Configure Powerlevel10k by running: ${CYAN}p10k configure${NC}"
 echo -e "    • Customize your dotfiles in ~/.config as needed"
+if [ ! -f "$HOME/.wallpapers/wallpaper.jpg" ]; then
+    echo -e "    • Add your wallpaper.jpg to dotfiles/ and re-run the script to set it up"
+fi
 echo ""
 echo -e "${PURPLE}${BOLD}Enjoy your new desktop environment! 🚀${NC}"

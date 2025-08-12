@@ -2,4 +2,4 @@
 name=Layan
 
 [Wallpapers]
-usersWallpapers=/home/p4bl0vx/Documentos/wallpaper.jpg,/home/p4bl0vx/Documentos/wallpaper_2.jpg
+usersWallpapers={{USER_HOME}}/.wallpapers/wallpaper.jpg

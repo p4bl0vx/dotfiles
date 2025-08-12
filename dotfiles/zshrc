@@ -128,4 +128,4 @@ alias pwninit='pwninit --template-path ~/.config/pwninit-template.py'
 
 eval "$(zoxide init zsh)"
 
-[ -f "/home/p4bl0vx/.ghcup/env" ] && . "/home/p4bl0vx/.ghcup/env" # ghcup-env
+[ -f "{{USER_HOME}}/.ghcup/env" ] && . "{{USER_HOME}}/.ghcup/env" # ghcup-env

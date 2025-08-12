@@ -138,7 +138,7 @@ DialogWidth=720
 positions={"1707x1067":[]}
 
 [Containments][80][Wallpaper][org.kde.image][General]
-Image=/home/p4bl0vx/Documentos/wallpaper_2.jpg
+Image={{USER_HOME}}/.wallpapers/wallpaper.jpg
 SlidePaths=/usr/share/wallpapers/
 
 [Containments][81]
