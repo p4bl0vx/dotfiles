@@ -271,6 +271,20 @@ python3 install.py -d ~/.local/share/themes -a mocha -s dark &>/dev/null
 cd - &>/dev/null
 success "Catppuccin GTK theme installed"
 
+step "Installing Catppuccin KDE theme"
+info "Downloading Catppuccin KDE theme..."
+git clone https://github.com/catppuccin/kde.git /tmp/catppuccin-kde &>/dev/null
+info "Installing Catppuccin Mocha KDE theme..."
+cd /tmp/catppuccin-kde
+mkdir -p ~/.local/share/plasma/desktoptheme &>/dev/null
+mkdir -p ~/.local/share/aurorae/themes &>/dev/null
+mkdir -p ~/.local/share/color-schemes &>/dev/null
+cp -r "plasma/desktoptheme/Catppuccin-Mocha" ~/.local/share/plasma/desktoptheme/ &>/dev/null
+cp -r "window-decorations/modern/Catppuccin-Mocha-Modern" ~/.local/share/aurorae/themes/ &>/dev/null
+cp "color-schemes/CatppuccinMochaLavender.colors" ~/.local/share/color-schemes/ &>/dev/null
+cd - &>/dev/null
+success "Catppuccin KDE theme installed"
+
 step "Installing Layan theme"
 info "Downloading Layan theme..."
 git clone https://github.com/vinceliuice/Layan-gtk-theme.git /tmp/layan-theme &>/dev/null
@@ -289,16 +303,6 @@ cd /tmp/tela-icons
 cd - &>/dev/null
 success "Tela icon theme installed"
 
-step "Installing Flat-Remix icons"
-info "Downloading Flat-Remix icons..."
-git clone https://github.com/daniruiz/flat-remix.git /tmp/flat-remix &>/dev/null
-info "Installing Flat-Remix Blue Dark..."
-cd /tmp/flat-remix
-mkdir -p ~/.local/share/icons &>/dev/null
-cp -r Flat-Remix-Blue-Dark ~/.local/share/icons/ &>/dev/null
-cd - &>/dev/null
-success "Flat-Remix icons installed"
-
 step "Installing Catppuccin cursor theme"
 info "Downloading Catppuccin cursors..."
 git clone https://github.com/catppuccin/cursors.git /tmp/catppuccin-cursors &>/dev/null
@@ -310,21 +314,8 @@ cd - &>/dev/null
 success "Catppuccin cursor theme installed"
 
 step "Applying theme configurations"
-info "Configuring GTK theme..."
-kwriteconfig5 --file ~/.config/kdeglobals --group General --key Name "Catppuccin-Mocha-Dark" &>/dev/null
-kwriteconfig5 --file ~/.config/kdeglobals --group General --key ColorScheme "CatppuccinMochaLavender" &>/dev/null
-
-info "Configuring icon theme..."
-kwriteconfig5 --file ~/.config/kdeglobals --group Icons --key Theme "Tela-purple-dark" &>/dev/null
-
-info "Configuring cursor theme..."
-kwriteconfig5 --file ~/.config/kdeglobals --group General --key cursorTheme "catppuccin-mocha-lavender-cursors" &>/dev/null
-
-info "Configuring window decorations..."
-kwriteconfig5 --file ~/.config/kwinrc --group org.kde.kdecoration2 --key theme "Catppuccin-Mocha" &>/dev/null
-
-info "Configuring Plasma theme..."
-kwriteconfig5 --file ~/.config/plasmarc --group Theme --key name "catppuccin-mocha" &>/dev/null
+info "Note: Most theme settings are already in dotfiles and will be applied automatically"
+info "Configuring additional KDE settings..."
 
 info "Configuring fonts..."
 kwriteconfig5 --file ~/.config/kdeglobals --group General --key font "FiraCode Nerd Font,10,-1,5,50,0,0,0,0,0" &>/dev/null
@@ -337,7 +328,6 @@ kwriteconfig5 --file ~/.config/kdeglobals --group KDE --key ShowDeleteCommand fa
 
 info "Updating icon cache..."
 gtk-update-icon-cache ~/.local/share/icons/Tela-purple-dark 2>/dev/null || true
-gtk-update-icon-cache ~/.local/share/icons/Flat-Remix-Blue-Dark 2>/dev/null || true
 success "Theme configurations applied"
 
 step "Finalizing setup"
